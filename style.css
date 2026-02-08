@@ -1,0 +1,536 @@
+/* =========================
+   GLOBAL
+========================= */
+:root{
+  --gold-light: rgba(230, 211, 163, 0.55);
+  --gold-dark: rgba(184, 153, 74, 0.95);
+  --card-gap: 16px;
+  --card-w: 170px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Hintergrundbild mit Blur */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("images/closet.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  transform: scale(1.05);
+  z-index: -2;
+}
+
+/* leichte Abdunklung */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+}
+
+/* Main Container */
+main#content{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   HOME: GLASS BOX
+========================= */
+.glass-box {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 60px 90px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.22);
+  transform: scale(1.2);
+}
+
+.glass-box h1 {
+  color: #111;
+  margin: 0 0 14px;
+  font-size: 2.4rem;
+}
+
+.glass-box p {
+  color: #333;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+/* =========================
+   HEADER + BURGER
+========================= */
+header {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 3000;
+}
+
+#menuBtn {
+  font-size: 60px;
+  background: none;
+  border: none;
+  color: rgba(230, 211, 163, 0.95);
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* =========================
+   SIDE MENU (Glass)
+========================= */
+nav#sideMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  padding-top: 90px;
+
+  background: rgba(18, 63, 50, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  z-index: 2500;
+}
+
+nav#sideMenu.open {
+  transform: translateX(0);
+}
+
+nav#sideMenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav#sideMenu li {
+  margin: 10px 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  color: rgba(230, 211, 163, 0.95);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+nav#sideMenu li:hover {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: translateX(4px);
+}
+
+/* Home SVG */
+nav#sideMenu li.home-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+nav#sideMenu li.home-item svg {
+  width: 26px;
+  height: 26px;
+  color: rgba(230, 211, 163, 0.95);
+  transition: transform 0.15s ease;
+}
+
+nav#sideMenu li.home-item:hover svg {
+  transform: scale(1.12);
+}
+
+/* =========================
+   CLOSET: BIG PANEL
+========================= */
+.closet-panel {
+  width: min(1200px, 92vw);
+  height: calc(100vh - 110px); /* lässt Rand-Hintergrund sichtbar */
+  margin: 70px auto 40px;
+  padding: 22px 22px 18px;
+
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 26px;
+  box-shadow: 0 18px 70px rgba(0,0,0,0.25);
+
+  overflow: auto;
+}
+
+/* Topbar: Titel + Add Button */
+.closet-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+.closet-title {
+  margin: 0 0 14px;
+  text-align: center;
+  color: #111;
+  font-size: 2.6rem;
+}
+
+/* Add Button */
+.add-btn{
+  position:absolute;
+  right: 14px;
+  top: 2px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: var(--gold-dark);
+  color: #111;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor:pointer;
+}
+.add-btn:hover{ filter: brightness(1.05); }
+
+/* =========================
+   FILTER STRIP + BUTTONS
+========================= */
+.filter-strip {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 18px;
+  padding: 12px 12px;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-btn {
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: var(--gold-light);
+  color: #1a1a1a;
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease, background 0.12s ease;
+}
+
+.filter-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.filter-btn.active {
+  background: var(--gold-dark);
+  border-color: rgba(184, 153, 74, 1);
+  color: #111;
+}
+
+/* "Alle" optisch separieren */
+.filter-bar .filter-btn:first-child {
+  margin-right: 24px;
+  position: relative;
+}
+
+/* Trennstrich schwarz, länger & sichtbar */
+.filter-bar .filter-btn:first-child::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 8%;
+  height: 84%;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 2px;
+}
+
+/* =========================
+   DIVIDERS + SECTION TITLE
+========================= */
+.thin-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.12);
+  margin: 16px 6px 14px;
+}
+
+.section-title {
+  margin: 12px 6px 10px;
+  text-align: left;
+  color: rgba(0,0,0,0.72);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+/* =========================
+   ITEM LAYOUTS
+   - wir nutzen überall item-row,
+     aber item-grid bleibt drin falls du später brauchst
+========================= */
+.item-row {
+  display: flex;
+  gap: var(--card-gap);
+  padding: 0 10px 12px;
+  overflow-x: auto;
+  justify-content: flex-start;
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--card-w));
+  gap: var(--card-gap);
+  padding: 0 10px 12px;
+  justify-content: flex-start;
+}
+
+/* Cards: schmal & hochkant */
+.item-card {
+  width: var(--card-w);
+  max-width: var(--card-w);
+  flex: 0 0 var(--card-w);
+
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.item-card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+}
+
+.item-card .item-name {
+  margin: 10px 4px 2px;
+  color: #111;
+  font-weight: 800;
+}
+
+.item-card .item-meta {
+  margin: 0 4px 6px;
+  color: rgba(0,0,0,0.62);
+  font-size: 0.9rem;
+}
+
+/* =========================
+   MODAL (Add Item)
+========================= */
+#addModal {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+}
+
+.modal-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, 92vw);
+
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 22px 80px rgba(0,0,0,0.35);
+
+  padding: 18px 18px 14px;
+}
+
+.modal-card h2 {
+  margin: 0 0 12px;
+  color: #111;
+}
+
+.modal-card label {
+  display: block;
+  margin: 10px 0 6px;
+  color: rgba(0,0,0,0.7);
+  font-weight: 800;
+}
+
+.modal-card input,
+.modal-card select {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.8);
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.modal-actions button {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+#cancelBtn {
+  background: rgba(255,255,255,0.8);
+}
+
+#saveBtn {
+  background: var(--gold-dark);
+}
+
+/* Dropdown Kategorien – Obergruppen */
+select optgroup {
+  font-weight: 700;
+    -webkit-text-fill-color: #ffffff;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Unterpunkte */
+select option {
+  font-weight: 400;
+  color: #e0e0e0;
+}
+.outfits-box {
+  max-width: 900px;
+}
+
+.outfit-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.outfit-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.outfit-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.arrow-btn {
+  font-size: 20px;
+  background: rgba(255,255,255,0.4);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.outfit-center {
+  min-width: 150px;
+  text-align: center;
+}
+
+.outfit-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.small {
+  font-size: 12px;
+  color: #555;
+}
+
+/* ===== CAROUSEL ===== */
+
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.card {
+  width: 220px;
+  height: 300px;
+  border-radius: 18px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card.active {
+  width: 260px;
+  height: 360px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  z-index: 2;
+}
+
+.preview-left,
+.preview-right {
+  opacity: 0.35;
+  transform: scale(0.85);
+  filter: blur(1px);
+}
+
+
+.arrow {
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 16px;
+}
